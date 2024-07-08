@@ -1,0 +1,22 @@
+{
+  "name": "bingo-master",
+  "version": "1.0.0",
+  "description": "A bingo The bingo-master library provides a simple and efficient way to manage and check bingo boards in javascript.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ashfaqsidd47s/bingo-master.git"
+  },
+  "keywords": [
+    "npm"
+  ],
+  "author": "Mohammad Ashfaq",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Ashfaqsidd47s/bingo-master/issues"
+  },
+  "homepage": "https://github.com/Ashfaqsidd47s/bingo-master#readme"
+}
