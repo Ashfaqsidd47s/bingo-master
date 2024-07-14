@@ -1,26 +1,21 @@
 class Board {
-    
     constructor() {
         this.board = Board.generateRandomBoard();
     }
 
-    // method genrates a random board
     static generateRandomBoard() {
         const size = 5;
         const numbers = [];
 
-        // Fill the array with numbers 1 to 25
         for (let i = 1; i <= size * size; i++) {
             numbers.push(i);
         }
 
-        // Shuffle the array
         for (let i = numbers.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
         }
 
-        // Create the 5x5 array
         const board = [];
         for (let i = 0; i < size; i++) {
             board[i] = numbers.slice(i * size, i * size + size);
@@ -31,7 +26,6 @@ class Board {
 }
 
 class Bingo {
-
     constructor() {
         this.playerWhiteBoard = new Board().board;
         this.playerBlackBoard = new Board().board;
@@ -42,44 +36,58 @@ class Bingo {
         this.winner = null;
     }
 
-    cancelNumber = function(number, player) {
-        if (this.isGameOver() || number < 1 || number > 25 || this.canceledNumbers.includes(number)) {
-            return;
+    cancelNumber(number, player) {
+        if (this.isGameOver()) {
+            throw new Error("The game is over.");
         }
-        if(this.turn == player) {
-            this.canceledNumbers.push(number);
-            this.whiteBingoCount = this.bingoCount(this.playerWhiteBoard)
-            this.blackBingoCount = this.bingoCount(this.playerBlackBoard)
-            this.getWinner();
-            if (this.winner) {
-                console.log(`Player ${this.winner} wins!`);
-                return;
-            }
-            this.turn = this.turn === 'w' ? 'b' : 'w';
-        } else {
-            console.log("not your turn")
-            return;
+        if (number < 1 || number > 25) {
+            throw new Error("Invalid number. Must be between 1 and 25.");
         }
+        if (this.canceledNumbers.includes(number)) {
+            throw new Error("Number has already been canceled.");
+        }
+        if (this.turn !== player) {
+            throw new Error("Not your turn.");
+        }
+
+        this.canceledNumbers.push(number);
+        this.whiteBingoCount = this.bingoCount(this.playerWhiteBoard);
+        this.blackBingoCount = this.bingoCount(this.playerBlackBoard);
+        this.getWinner();
+
+        if (this.winner) {
+            return `Player ${this.winner} wins!`;
+        }
+
+        this.turn = this.turn === 'w' ? 'b' : 'w';
+        return `Number ${number} canceled for player ${player}.`;
     }
 
-    loadWhite = function(board) {
+    loadWhite(board) {
+        if (!Array.isArray(board) || board.length !== 5 || !board.every(row => Array.isArray(row) && row.length === 5)) {
+            throw new Error("Invalid board. Must be a 5x5 array.");
+        }
         this.playerWhiteBoard = board;
-    }
-    loadBlack = function(board) {
-        this.playerBlackBoard = board;
+        return "White player's board loaded.";
     }
 
-    getTurn = function() {
+    loadBlack(board) {
+        if (!Array.isArray(board) || board.length !== 5 || !board.every(row => Array.isArray(row) && row.length === 5)) {
+            throw new Error("Invalid board. Must be a 5x5 array.");
+        }
+        this.playerBlackBoard = board;
+        return "Black player's board loaded.";
+    }
+
+    getTurn() {
         return this.turn;
     }
 
-    isCanceled = function(num) {
+    isCanceled(num) {
         return this.canceledNumbers.includes(num);
     }
 
-    bingoCount = function(board) {
-        // count how many lined has been crossed in the board
-        // row count 
+    bingoCount(board) {
         let count = 0;
         for (let i = 0; i < 5; i++) {
             let rowCanceled = true;
@@ -95,9 +103,7 @@ class Bingo {
             if (rowCanceled) count++;
             if (columnCanceled) count++;
         }
-    
-        console.log("row column count :" + count)
-        // Check diagonals
+
         let diagonal1Canceled = true;
         let diagonal2Canceled = true;
         for (let i = 0; i < 5; i++) {
@@ -110,23 +116,21 @@ class Bingo {
         }
         if (diagonal1Canceled) count++;
         if (diagonal2Canceled) count++;
-    
+
         return count;
     }
 
-    getWinner = function() {
-        if(this.whiteBingoCount >= 5){
-            this.winner = "w"
-        }
-        if(this.blackBingoCount >= 5){
-            this.winner = "b"
+    getWinner() {
+        if (this.whiteBingoCount >= 5) {
+            this.winner = 'w';
+        } else if (this.blackBingoCount >= 5) {
+            this.winner = 'b';
         }
     }
 
-    isGameOver = function(){
-        return this.whiteBingoCount >= 5 || this.blackBingoCount >= 5
+    isGameOver() {
+        return this.winner !== null;
     }
-
 }
 
 export default Bingo;
