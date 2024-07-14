@@ -43,28 +43,19 @@ class Bingo {
     }
 
     cancelNumber = function(number, player) {
-        if(this.isGameOver()){
-            return;
-        }
-        if(number < 1 && number > 25 ){
-            return;
-        }
-        if(this.canceledNumbers.includes(number)){
+        if (this.isGameOver() || number < 1 || number > 25 || this.canceledNumbers.includes(number)) {
             return;
         }
         if(this.turn == player) {
             this.canceledNumbers.push(number);
             this.whiteBingoCount = this.bingoCount(this.playerWhiteBoard)
             this.blackBingoCount = this.bingoCount(this.playerBlackBoard)
-            if(this.turn == "w"){
-                this.turn = "b"
+            this.getWinner();
+            if (this.winner) {
+                console.log(`Player ${this.winner} wins!`);
                 return;
             }
-            if(this.turn == "b") {
-                this.turn = "w";
-                return;
-            }
-            return;
+            this.turn = this.turn === 'w' ? 'b' : 'w';
         } else {
             console.log("not your turn")
             return;
