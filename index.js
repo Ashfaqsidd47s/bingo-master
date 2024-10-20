@@ -36,6 +36,7 @@ class Bingo {
         this.winner = null;
     }
 
+
     cancelNumber(number, player) {
         if (this.isGameOver()) {
             throw new Error("The game is over.");
@@ -130,6 +131,56 @@ class Bingo {
 
     isGameOver() {
         return this.winner !== null;
+    }
+}
+
+export function boardDetails(board, canceled){
+    let resBoard = [];
+    for (let i = 0; i < 5; i++) {
+        resBoard.push([]);
+        for (let j = 0; j < 5; j++) {
+            resBoard[i].push({
+                val: board[i][j],
+                isCanceled: canceled.includes(board[i][j])
+            })
+        }
+    }
+    let canceledRows = [];
+    let canceledCols = [];
+    let canceledDig = [];
+    for (let i = 0; i < 5; i++) {
+        let rowCanceled = true;
+        let columnCanceled = true;
+        for (let j = 0; j < 5; j++) {
+            if (!canceled.includes(board[i][j])) {
+                rowCanceled = false;
+            }
+            if (!canceled.includes(board[j][i])) {
+                columnCanceled = false;
+            }
+        }
+        if (rowCanceled) canceledRows.push(i);
+        if (columnCanceled) canceledCols.push(j);
+    }
+
+    let diagonal1Canceled = true;
+    let diagonal2Canceled = true;
+    for (let i = 0; i < 5; i++) {
+        if (!this.isCanceled(board[i][i])) {
+            diagonal1Canceled = false;
+        }
+        if (!this.isCanceled(board[i][4 - i])) {
+            diagonal2Canceled = false;
+        }
+    }
+    if (diagonal1Canceled) canceledDig.push(1);
+    if (diagonal2Canceled) canceledDig.push(2);
+
+    return {
+        board: resBoard,
+        rows: canceledRows,
+        cols: canceledCols,
+        digs: canceledDig
     }
 }
 
