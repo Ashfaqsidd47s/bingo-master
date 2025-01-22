@@ -16,7 +16,7 @@
     "type": "git",
     "url": "git+https://github.com/Ashfaqsidd47s/bingo-master.git"
   },
-  "license": "ISC",
+  "license": "Apache-2.0",
   "description": "A Bingo game library implemented in TypeScript",
   "devDependencies": {
     "@types/jest": "^29.5.14",
