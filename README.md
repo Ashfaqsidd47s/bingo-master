@@ -1,197 +1,191 @@
-# Bingo Master
+# Bingo Master Library
 
-A JavaScript library to create and play a Bingo game. This library allows you to create Bingo boards, cancel numbers, track turns, and determine the winner.
+The **Bingo Master Library** offers a unique twist on the classic Bingo game. 
+- In this version, players compete on randomly generated boards of a chosen size (default: 5x5, with numbers from 1 to size² arranged randomly). - Each player takes turns calling a number, and all players cancel that number on their boards. 
+- A point is scored for canceling a complete row, column, or diagonal. 
+- The first player to score points equal to the board size wins the game. 
+- The library supports customizable board sizes and  2 to board size players (for 5*5 board there an be 2-5 players in a match).
 
-## Installation
+## Table of Contents
 
-To install the package, use npm:
+- [Overview](#overview)
+- [Bingo Class Functions](#bingo-class-functions)
+- [Board Class Functions](#board-class-functions)
+- [Usage Example](#usage-example)
 
-```bash
-npm install bingo-master
-```
+---
 
-## Usage
-First, import the Bingo class from the package:
+## Overview
 
-```javascript
-import Bingo from 'bingo-master';
-```
+### Features
 
-Creating a Bingo Game
-To create a new Bingo game, instantiate the Bingo class:
+- The standard board is 5x5.
+- Supports 2 to 5 players.
+- Custom initialization of boards for saved game states.
+- Automated or manual number cancellation.
 
-```javascript
-const bingoGame = new Bingo();
-```
-## Functions
-### cancelNumber(number, player)
-**Cancels a number for the current player if it is their turn.**
+### How the Game Works
 
-#### Parameters:
-- number (number): The number to cancel (must be between 1 and 25).
-- player (string): The player making the move ('w' for white, 'b' for black).
-- Returns: A message indicating the result of the move or an error.
-- Throws:
-    - Error if the game is over.
-    - Error if the number is invalid.
-    - Error if the number has already been canceled.
-    - Error if it's not the player's turn.
-#### Example:
+- Players take turns calling numbers.
+- The board tracks canceled numbers.
+- Rows, columns, and diagonals can be canceled. The player who cancels the required numbers first wins.
 
-```javascript
-try {
-  const message = bingoGame.cancelNumber(10, 'w');
-  console.log(message); // Output: "Number 10 canceled for player w."
-} catch (error) {
-  console.error(error.message);
-}
-```
+---
 
-### loadWhite(board)
-**Loads a custom board for the white player.**
+## Bingo Class Functions
 
-#### Parameters:
-- board (number[][]): A 5x5 array representing the board.
-- Returns: A message indicating the board was loaded.
-- Throws: Error if the board is not a valid 5x5 array.
-#### Example:
+### `constructor(size: number = 5, count: number = 2)`
+Initializes the game with a given board size and number of players.
 
-```javascript
-try {
-  const customBoard = [
-    [1, 2, 3, 4, 5],
-    [6, 7, 8, 9, 10],
-    [11, 12, 13, 14, 15],
-    [16, 17, 18, 19, 20],
-    [21, 22, 23, 24, 25]
-  ];
-  const message = bingoGame.loadWhite(customBoard);
-  console.log(message); // Output: "White player's board loaded."
-} catch (error) {
-  console.error(error.message);
-}
-```
+- **Parameters:**
+  - `size`: Size of the board (default: 5).
+  - `count`: Number of players (default: 2).
 
-### loadBlack(board)
-**Loads a custom board for the black player.**
+- **Throws Errors:**
+  - If `size` is less than 2.
+  - If `count` is less than 2 or greater than `size`.
 
-#### Parameters:
-board (number[][]): A 5x5 array representing the board.
-Returns: A message indicating the board was loaded.
-Throws: Error if the board is not a valid 5x5 array.
-#### Example:
+### `getTurn(): number`
+Returns the current player's turn.
 
-```javascript
-try {
-  const customBoard = [
-    [1, 2, 3, 4, 5],
-    [6, 7, 8, 9, 10],
-    [11, 12, 13, 14, 15],
-    [16, 17, 18, 19, 20],
-    [21, 22, 23, 24, 25]
-  ];
-  const message = bingoGame.loadBlack(customBoard);
-  console.log(message); // Output: "Black player's board loaded."
-} catch (error) {
-  console.error(error.message);
-}
-```
+- **Example:** Player 1 starts the game, returns `0`.
 
-### getTurn()
-**Gets the current turn.**
+### `getBoards(): number[][][]`
+Returns all players' boards.
 
-- Returns: 'w' if it's white player's turn, 'b' if it's black player's turn.
-#### Example:
+- **Example:** Used to inspect game boards.
 
-```javascript
-const currentTurn = bingoGame.getTurn();
-console.log(currentTurn); // Output: 'w' or 'b'
-```
+### `getMyBoard(ind: number): number[][]`
+Returns the board of a specific player.
 
-### isCanceled(num)
-**Checks if a number has been canceled.**
+- **Parameters:**
+  - `ind`: Player index (0-based).
 
-#### Parameters:
-- num (number): The number to check.
-- Returns: boolean True if the number  has been canceled, false otherwise.
-#### Example:
+### `getMyCancelCount(ind: number): number`
+Returns the cancel count for a specific player.
 
-```javascript
-const isNumberCanceled = bingoGame.isCanceled(10);
-console.log(isNumberCanceled); // Output: true or false
-```
-### bingoCount(board)
-**Counts the number of completed rows, columns, and diagonals on a board.**
+- **Parameters:**
+  - `ind`: Player index (0-based).
 
-#### Parameters:
-- board (number[][]): The board to check.
-- Returns: number The count of completed rows, columns, and diagonals.
-#### Example:
+### `getMyCanceledInfo(ind: number): string[]`
+Returns canceled rows, columns, or diagonals for a specific player.
 
-```javascript
-const whiteBingoCount = bingoGame.bingoCount(bingoGame.playerWhiteBoard);
-console.log(whiteBingoCount); // Output: A number indicating completed lines
-```
+- **Parameters:**
+  - `ind`: Player index (0-based).
 
-### getWinner()
-**Determines if there is a winner. Updates the winner property if a player has 5 or more completed lines.**
+### `getCanceled(): number[]`
+Returns all canceled numbers so far.
 
-#### Example:
+### `getCancelCounts(): number[]`
+Returns the cancel counts for all players.
 
-```javascript
+### `getWinner(): number | null`
+Returns the index of the winner or `null` if no one has won yet.
 
-bingoGame.getWinner();
-if (bingoGame.winner) {
-  console.log(`Player ${bingoGame.winner} wins!`);
-}
-```
+### `cancelNumber(num: number, turn: number)`
+Cancels a number for the current player's turn.
 
-### isGameOver()
-**Checks if the game is over.**
+- **Parameters:**
+  - `num`: Number to cancel.
+  - `turn`: Player's turn index.
 
-- Returns: boolean True if there is a winner, false otherwise.
-Example:
+- **Throws Errors:**
+  - If the game is over.
+  - If it’s not the player's turn.
+  - If the number is out of range or already canceled.
 
-```javascript
+### `customInitialize(newBoards: number[][][], newCanceles: number[])`
+Initializes the game with custom boards and canceled numbers.
 
-const gameOver = bingoGame.isGameOver();
-console.log(gameOver); // Output: true or false
-```
+- **Parameters:**
+  - `newBoards`: Array of custom boards for each player.
+  - `newCanceles`: Array of canceled numbers.
 
-## Full Example
-**Here is a complete example of using the Bingo Master package:**
+---
 
-```javascript
+## Board Class Functions
 
-import Bingo from 'bingo-master';
+### `constructor(size: number)`
+Creates a new board of the given size.
 
-const bingoGame = new Bingo();
+- **Throws Errors:**
+  - If the size is less than 2.
+
+### `getData(): number[][]`
+Returns the current board data.
+
+### `getCancelCount(): number`
+Returns the count of canceled rows, columns, or diagonals.
+
+### `getCanceldInfo(): string[]`
+Returns a list of canceled rows, columns, and diagonals.
+
+### `cancelNumber(num: number): number`
+Cancels a specific number and updates the board state.
+
+- **Parameters:**
+  - `num`: Number to cancel.
+
+### `customInitialize(newBoard: number[][], newCanceles: number[]): number`
+Reinitializes the board with a custom setup.
+
+- **Parameters:**
+  - `newBoard`: Custom board configuration.
+  - `newCanceles`: Array of numbers to cancel.
+
+---
+
+## Usage Example
+
+Here is a complete example of a game between two players using a 3x3 board:
+
+```typescript
+import { Bingo } from "bingo-master";
+
+// Initialize a 3x3 Bingo game for 2 players
+const game = new Bingo(3, 2);
+
+// Player 1 and Player 2 boards
+console.log("Player 1 Board:", game.getMyBoard(0));
+console.log("Player 2 Board:", game.getMyBoard(1));
+
+// Player 1 cancels a number
+const turn = game.getTurn();
+console.log("Turn:", turn); // Should be 0 (Player 1)
 
 try {
-  console.log(bingoGame.cancelNumber(10, 'w')); // Cancel number 10 for white player
-  console.log(bingoGame.getTurn()); // Get current turn
+  game.cancelNumber(5, turn); // Player 1 cancels number 5
+  console.log("Canceled Numbers:", game.getCanceled());
+} catch (err) {
+  console.error(err.message);
+}
 
-  console.log(bingoGame.cancelNumber(20, 'b')); // Cancel number 20 for black player
-  console.log(bingoGame.getTurn()); // Get current turn
+// Player 2 cancels a number
+const nextTurn = game.getTurn();
+console.log("Turn:", nextTurn); // Should be 1 (Player 2)
 
-  const customBoard = [
-    [1, 2, 3, 4, 5],
-    [6, 7, 8, 9, 10],
-    [11, 12, 13, 14, 15],
-    [16, 17, 18, 19, 20],
-    [21, 22, 23, 24, 25]
-  ];
-  console.log(bingoGame.loadWhite(customBoard)); // Load custom board for white player
+try {
+  game.cancelNumber(3, nextTurn); // Player 2 cancels number 3
+  console.log("Canceled Numbers:", game.getCanceled());
+} catch (err) {
+  console.error(err.message);
+}
 
-  bingoGame.getWinner();
-  if (bingoGame.winner) {
-    console.log(`Player ${bingoGame.winner} wins!`);
-  } else {
-    console.log("No winner yet.");
-  }
-} catch (error) {
-  console.error(error.message);
+// Check if there is a winner
+const winner = game.getWinner();
+if (winner !== null) {
+  console.log(`Player ${winner + 1} wins!`);
+} else {
+  console.log("No winner yet, keep playing!");
 }
 ```
 
-This example demonstrates creating a Bingo game, canceling numbers, loading custom boards, checking the current turn, and determining the winner.
+---
+
+## Additional Notes
+
+- **Default Board Size:** 5x5.
+- **Default Players:** 2.
+- The game ends when a player cancels an entire row, column, or diagonal.
+- Use `customInitialize` to resume a game from a saved state.
+
