@@ -1,6 +1,6 @@
 {
   "name": "bingo-master",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "main": "index.js",
   "scripts": {
     "test": "jest",
@@ -10,10 +10,14 @@
     "dev": " tsc && node desc/index.js",
     "start": "node dist/index.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["bingo", "bingo-master","5*5 bingo", "game", "board game", "multiplayer board game", "typescript", "npm library"],
+  "author": "Mohammad Ashfaq ashfaqsidd47@gmail.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ashfaqsidd47s/bingo-master.git"
+  },
   "license": "ISC",
-  "description": "",
+  "description": "A Bingo game library implemented in TypeScript",
   "devDependencies": {
     "@types/jest": "^29.5.14",
     "jest": "^29.7.0",
