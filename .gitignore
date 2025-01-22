@@ -1,0 +1,65 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Node Modules
+node_modules/
+
+# Dependency directories
+jspm_packages/
+
+# TypeScript
+*.tsbuildinfo
+dist/
+build/
+out/
+
+# Jest
+coverage/
+.jest/
+
+# Environment Variables
+.env
+.env.*.local
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE/Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Package Managers
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Debugging and System Files
+*.seed
+*.pid
+*.pid.lock
+*.tgz
+
+# Tests
+*.test.ts
+*.test.js
+*.spec.ts
+*.spec.js
+
+# Miscellaneous
+*.log
+*.bak
+*.tmp
+*.orig
+
+# Ignore npm library output if publishing
+lib/
+
+# Git hooks
+.husky/
