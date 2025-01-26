@@ -1,3 +1,5 @@
+import { Tile } from "./types";
+
 export class Board {
     readonly size: number;
     private data: number[][];
@@ -6,6 +8,7 @@ export class Board {
     private canceledColsCount: number[];
     private canceledDignlsCount: number[];
     private cancel_count: number;
+    is_canceled: boolean[][];
 
     constructor(size: number) {
         if (size < 2) {
@@ -13,6 +16,13 @@ export class Board {
         }
         this.size = size;
         this.data = Board.create(size);
+        this.is_canceled = []
+        for (let i = 0; i < size; i++) {
+            this.is_canceled[i] = []
+            for (let j = 0; j < size; j++) {
+               this.is_canceled[i][j] = false;
+            }
+        }
         this.cancel_count = 0;
         this.map = new Map();
         this.data.forEach((row, i) => {
@@ -82,6 +92,7 @@ export class Board {
         const value = this.map.get(num);
         if(value) {
             const  [row, col] = value;
+            this.is_canceled[row][col] = true;
             this.canceledRowsCount[row]++;
             this.canceledColsCount[col]++;
             if(this.canceledRowsCount[row] === this.size) this.cancel_count++;
@@ -106,6 +117,13 @@ export class Board {
                 this.map.set(item, [i, j]);
             });
         });
+        
+        for (let i = 0; i < this.size; i++) {
+            this.is_canceled[i] = []
+            for (let j = 0; j < this.size; j++) {
+               this.is_canceled[i][j] = false;
+            }
+        }
         this.canceledRowsCount.fill(0)
         this.canceledColsCount.fill(0)
         this.canceledDignlsCount.fill(0)
@@ -117,4 +135,18 @@ export class Board {
         return this.cancel_count;
     }
 
+    // create a function which will give detailed info about board
+    public getBoardDetails() : Tile[][] {
+        const res: Tile[][] = []
+        this.data.forEach((row, i) => {
+            res[i] = []
+            row.forEach((item, j) => {
+                res[i][j] = {
+                    value: item,
+                    isCanceled: this.is_canceled[i][j]
+                }
+            });
+        });
+        return res;
+    }
 }

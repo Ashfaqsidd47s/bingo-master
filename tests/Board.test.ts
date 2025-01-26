@@ -1,4 +1,5 @@
 import { Board } from '../src/Board';
+import { Tile } from '../src/types';
 
 describe('Board Class', () => {
   let board: Board;
@@ -13,6 +14,7 @@ describe('Board Class', () => {
       [16, 17, 18, 19, 20],
       [21, 22, 23, 24, 25],
     ];
+    const res: Tile[][] = [];
   });
 
   it('should initialize with the correct size', () => {
@@ -95,5 +97,27 @@ describe('Board Class', () => {
 
     expect(board.getCancelCount()).toBe(1);
     expect(board.getCanceldInfo()).toContain('D_0');
+  });
+
+  it("should get the bord details correctly ", () => {
+    const canceledNumbers = [1, 2, 3, 4, 5]; 
+    const testBoard = new Board(5);
+    console.log(testBoard.is_canceled)
+    testBoard.customInitialize(newBoard, canceledNumbers)
+    console.log(testBoard.is_canceled)
+    board.customInitialize(newBoard, canceledNumbers);
+    const res: Tile[][] = [];
+    newBoard.forEach((row, i) => {
+      res[i] = []
+      row.forEach((item, j) => {
+        if(i == 0) {
+          res[i][j] = {value: item, isCanceled: true}
+        } else {
+          res[i][j] = {value: item, isCanceled: false}
+        }
+      });
+    });
+    
+    expect(board.getBoardDetails()).toEqual(res)
   });
 });

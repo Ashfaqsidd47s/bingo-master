@@ -1,4 +1,5 @@
 import { Board } from "./Board";
+import { Tile } from "./types";
 
 export class Bingo {
     readonly size: number;
@@ -62,6 +63,13 @@ export class Bingo {
         return this.boards[ind].getCanceldInfo();
     }
 
+    public getMyBoardInfo(ind: number) : Tile[][] {
+        if(ind < 0 || ind > this.size) {
+            throw new Error("Invalid index...")
+        }
+        return this.boards[ind].getBoardDetails();
+    }
+
     public getCanceled() : number[] {
         return [...this.canceled];
     }
@@ -106,7 +114,6 @@ export class Bingo {
 
 
     }
-    
     
    /**
     * README BEFOR USING THIS FUNCTION  
