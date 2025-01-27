@@ -1,13 +1,14 @@
 {
   "name": "bingo-master",
-  "version": "2.1.0",
-  "main": "index.js",
+  "version": "2.1.1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "build": "tsc",
-    "dev": " tsc && node desc/index.js",
+    "dev": " tsc && node dist/index.js",
     "start": "node dist/index.js"
   },
   "keywords": ["bingo", "bingo-master","5*5 bingo", "game", "board game", "multiplayer board game", "typescript", "npm library"],
